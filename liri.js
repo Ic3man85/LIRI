@@ -64,17 +64,20 @@ function concertInfo(input) {
         });
 }
 
-function songInfo(input, spotify) {
+function songInfo(song, spotify) {
     spotify.search({
             type: "track",
-            query: input
+            query: song
         },
         function(err, response) {
             if (err) {
                 console.log("Error occurred: " + err);
                 return;
             }
-            console.log(response.tracks.items)
+            // console.log(response.tracks.items)
+            let result = response.tracks.items;
+            console.log(result);
+
 
         }
     )
@@ -118,6 +121,6 @@ function doWhatItSays() {
 
 }
 let runFunction = function(one, two) {
-    doWhatItSays(one, two);
+    randomFunction(one, two);
 }
 runFunction(command, input);
