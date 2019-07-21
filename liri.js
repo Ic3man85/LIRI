@@ -9,22 +9,23 @@ let fs = require("fs");
 
 
 let command = process.argv[2];
-let input = "";
+let input = process.argv.slice(3).join(" ");
+let song = "";
 let nodeArgs = process.argv;
 for (let i = 3; i < nodeArgs.length; i++) {
     if (i > 3 && i < nodeArgs.length) {
-        input = input + "%20" + nodeArgs[i];
+        song = song + "%20" + nodeArgs[i];
     } else {
-        input += nodeArgs[i];
+        song += nodeArgs[i];
     }
 }
-let randomFunction = function(command, input) {
+let randomFunction = function(command, input, song) {
     switch (command) {
         case "concert-this":
             concertInfo(input);
             break;
         case "spotify-this-song":
-            songInfo(input);
+            songInfo(input, spotify);
             break;
         case "movie-this":
             if (!input) {
@@ -47,7 +48,8 @@ function concertInfo(input) {
         .then(function(response) {
             // console.log(response.data);
             for (let i = 0; i < response.data.length; i++) {
-                console.log("-----" + input + "-----")
+                console.log("-----UPCOMING CONCERTS------")
+                console.log("Name: " + input)
                 console.log("Venue Name: " + response.data[i].venue.name);
                 console.log("Location: " + response.data[i].venue.city + ", " +
                     response.data[i].venue.region + " " + response.data[i].venue.country);
@@ -63,20 +65,24 @@ function concertInfo(input) {
 }
 
 function songInfo(input, spotify) {
-    spotify
-        .search({ type: 'track', query: input })
-        .then(function(response) {
-            console.log(response);
-        })
-        .catch(function(err) {
-            console.log(err);
-        });
+    spotify.search({
+            type: "track",
+            query: input
+        },
+        function(err, response) {
+            if (err) {
+                console.log("Error occurred: " + err);
+                return;
+            }
+            console.log(response.tracks.items)
+
+        }
+    )
 }
 
 function movieInfo(input) {
     axios.get("http://www.omdbapi.com/?t=" + input + "&y=&plot=full&tomatoes=true&apikey=trilogy")
         .then(function(response) {
-            console.log(response);
             let movie = response.data;
             console.log("Title: " + movie.Title);
             console.log("---------------------------------")
@@ -109,10 +115,9 @@ function doWhatItSays() {
             randomFunction(random[0]);
         }
     })
-}
 
+}
 let runFunction = function(one, two) {
-    randomFunction(one, two);
+    doWhatItSays(one, two);
 }
-
 runFunction(command, input);
