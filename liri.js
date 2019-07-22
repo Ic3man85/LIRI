@@ -9,15 +9,7 @@ let fs = require("fs");
 
 let command = process.argv[2];
 let input = process.argv.slice(3).join(" ");
-let song = "";
-let nodeArgs = process.argv;
-for (let i = 3; i < nodeArgs.length; i++) {
-    if (i => 3 && i < nodeArgs.length) {
-        song = song + "%20" + nodeArgs[i];
-    } else {
-        song += nodeArgs[i];
-    }
-}
+
 switch (command) {
     case "concert-this":
         concertInfo(input);
@@ -25,9 +17,9 @@ switch (command) {
     case "spotify-this-song":
         if (!input) {
             input = "The Sign";
-            songInfo(input, spotify);
+            songInfo(input);
         } else {
-            songInfo(input, spotify);
+            songInfo(input);
         }
         break;
     case "movie-this":
@@ -66,7 +58,7 @@ function concertInfo(input) {
         });
 }
 
-function songInfo(input, spotify) {
+function songInfo(input) {
     spotify.search({
             type: "track",
             query: input,
@@ -95,33 +87,66 @@ function movieInfo(input) {
     axios.get("http://www.omdbapi.com/?t=" + input + "&y=&plot=full&tomatoes=true&apikey=trilogy")
         .then(function(response) {
             let movie = response.data;
-            console.log("Title: " + movie.Title);
-            console.log("---------------------------------")
-            console.log("Year released: " + movie.Released);
-            console.log("IMDB rating: " + movie.imdbRating);
-            console.log("Rotten Tomatoes ratiing: " + movie.Ratings[1].Value);
-            console.log("Country: " + movie.Country);
-            console.log("Language: " + movie.Language);
-            console.log("---------------------------------")
-            console.log("Plot: " + movie.Plot);
-            console.log("---------------------------------")
-            console.log("Actors: " + movie.Actors);
-
+            let stuff = [console.log("Title: " + movie.Title),
+                console.log("---------------------------------"),
+                console.log("Year released: " + movie.Released),
+                console.log("IMDB rating: " + movie.imdbRating),
+                console.log("Rotten Tomatoes ratiing: " + movie.Ratings[1].Value),
+                console.log("Country: " + movie.Country),
+                console.log("Language: " + movie.Language),
+                console.log("---------------------------------"),
+                console.log("Plot: " + movie.Plot),
+                console.log("---------------------------------"),
+                console.log("Actors: " + movie.Actors),
+            ];
+            // fs.appendFile("movies.txt", stuff, function(err) {
+            //     if (err) {
+            //         console.log(err);
+            //     }
+            //     fs.appendFile("Title: " + movie.Title);
+            //     fs.appendFile("---------------------------------");
+            //     fs.appendFile("Year released: " + movie.Released);
+            //     fs.appendFile("IMDB rating: " + movie.imdbRating);
+            //     fs.appendFile("Rotten Tomatoes ratiing: " + movie.Ratings[1].Value);
+            //     fs.appendFile("Country: " + movie.Country);
+            //     fs.appendFile("Language: " + movie.Language);
+            //     fs.appendFile("---------------------------------");
+            //     fs.appendFile("Plot: " + movie.Plot);
+            //     fs.appendFile("---------------------------------");
+            //     fs.appendFile("Actors: " + movie.Actors);
+            // })
         }).catch(function(error) {
             if (error) {
                 console.log(error);
             }
         });
+
+
 }
 
 function doWhatItSays(input) {
 
     fs.readFile("random.txt", "utf8", function(error, data) {
-        console.log(data);
         if (error) {
             return console.log(error);
         }
-        var random = data.split(',');
-        songInfo(random[0], random[1]);
+        let random = data.split(",");
+        random1 = random[Math.floor(Math.random() * random.length)];
+        console.log(random1);
+        let info = random1.split(" ");
+        switch (info[0]) {
+            case "concert-this":
+                concertInfo(info[1]);
+                break;
+            case "movie-this":
+                movieInfo(info[1]);
+                break;
+            case "spotify-this-song":
+                songInfo(info[1]);
+                break;
+            default:
+                console.log("Invalid input");
+        }
+
     });
 }
