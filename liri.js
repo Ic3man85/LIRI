@@ -1,6 +1,5 @@
 require("dotenv").config();
 let keys = require("./keys.js");
-let request = require("request")
 let Spotify = require("node-spotify-api")
 let spotify = new Spotify(keys.spotify);
 let axios = require("axios");
@@ -13,35 +12,38 @@ let input = process.argv.slice(3).join(" ");
 let song = "";
 let nodeArgs = process.argv;
 for (let i = 3; i < nodeArgs.length; i++) {
-    if (i > 3 && i < nodeArgs.length) {
+    if (i => 3 && i < nodeArgs.length) {
         song = song + "%20" + nodeArgs[i];
     } else {
         song += nodeArgs[i];
     }
 }
-let randomFunction = function(command, input, song) {
-    switch (command) {
-        case "concert-this":
-            concertInfo(input);
-            break;
-        case "spotify-this-song":
+switch (command) {
+    case "concert-this":
+        concertInfo(input);
+        break;
+    case "spotify-this-song":
+        if (!input) {
+            input = "The Sign";
             songInfo(input, spotify);
-            break;
-        case "movie-this":
-            if (!input) {
-                input = "Mr. Nobody"
-                movieInfo(input);
-            } else {
-                movieInfo(input);
-            }
-            break;
-        case "do-what-it-says":
-            doWhatItSays();
-            break;
-        default:
-            console.log("Liri doesnt know that!");
-    }
-};
+        } else {
+            songInfo(input, spotify);
+        }
+        break;
+    case "movie-this":
+        if (!input) {
+            input = "Mr. Nobody"
+            movieInfo(input);
+        } else {
+            movieInfo(input);
+        }
+        break;
+    case "do-what-it-says":
+        doWhatItSays(input);
+        break;
+    default:
+        console.log("Liri doesnt know that!");
+}
 
 function concertInfo(input) {
     axios.get("https://rest.bandsintown.com/artists/" + input + "/events?app_id=codingbootcamp")
@@ -64,21 +66,27 @@ function concertInfo(input) {
         });
 }
 
-function songInfo(song, spotify) {
+function songInfo(input, spotify) {
     spotify.search({
             type: "track",
-            query: song
+            query: input,
         },
         function(err, response) {
             if (err) {
                 console.log("Error occurred: " + err);
                 return;
             }
-            // console.log(response.tracks.items)
+            console.log("query:" + input);
             let result = response.tracks.items;
-            console.log(result);
-
-
+            for (let i = 0; i < 5; i++) {
+                console.log("\n-----SONG INFORMATION-----");
+                console.log("Artist: " + result[i].artists[0].name);
+                console.log("Track: " + result[i].name);
+                console.log("Preview: " + result[i].preview_url);
+                console.log("Spotify: " + result[i].external_urls.spotify);
+                console.log("Album: " + result[i].album.name);
+                console.log("--------------------------");
+            }
         }
     )
 }
@@ -106,21 +114,14 @@ function movieInfo(input) {
         });
 }
 
-function doWhatItSays() {
+function doWhatItSays(input) {
 
     fs.readFile("random.txt", "utf8", function(error, data) {
         console.log(data);
-
-        let random = data.split(", ");
-        if (random.length === 2) {
-            randomFunction(random[0], random[1]);
-        } else if (random.length === 1) {
-            randomFunction(random[0]);
+        if (error) {
+            return console.log(error);
         }
-    })
-
+        var random = data.split(',');
+        songInfo(random[0], random[1]);
+    });
 }
-let runFunction = function(one, two) {
-    randomFunction(one, two);
-}
-runFunction(command, input);
