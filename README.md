@@ -28,3 +28,7 @@ is from.
 do-what-it-says:
 you recieve information from the string that it pulls from the random.txt file and runs 
 the query. you get results from what ever query it pulls. 
+
+link to Portfolio  https://ic3man85.github.io/Portfolio/
+
+it has a few images of LIRI
