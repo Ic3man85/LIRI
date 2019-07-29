@@ -29,5 +29,5 @@ do-what-it-says:
 you recieve information from the string that it pulls from the random.txt file and runs 
 the query. you get results from what ever query it pulls. 
 
-link to Portfolio:  https://ic3man85.github.io/Portfolio/.
-link to Live Video: https://drive.google.com/file/d/1ZSyJAYGwyFSytawHvOW3kKbX6_P4p43q/view.
+link to Portfolio:               https://ic3man85.github.io/Portfolio/.
+link to Live Video:              https://drive.google.com/file/d/1ZSyJAYGwyFSytawHvOW3kKbX6_P4p43q/view.
