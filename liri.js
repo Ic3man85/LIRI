@@ -41,7 +41,7 @@ function concertInfo(input) {
     axios.get("https://rest.bandsintown.com/artists/" + input + "/events?app_id=codingbootcamp")
         .then(function(response) {
             // console.log(response.data);
-            for (let i = 0; i < response.data.length; i++) {
+            for (let i = 0; i < 10; i++) {
                 console.log("-----UPCOMING CONCERTS------")
                 console.log("Name: " + input)
                 console.log("Venue Name: " + response.data[i].venue.name);
@@ -70,7 +70,7 @@ function songInfo(input) {
             }
             console.log("query:" + input);
             let result = response.tracks.items;
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < 1; i++) {
                 console.log("\n-----SONG INFORMATION-----");
                 console.log("Artist: " + result[i].artists[0].name);
                 console.log("Track: " + result[i].name);
