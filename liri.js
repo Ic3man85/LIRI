@@ -131,18 +131,19 @@ function doWhatItSays(input) {
             return console.log(error);
         }
         let random = data.split(",");
-        random1 = random[Math.floor(Math.random() * random.length)];
-        console.log(random1);
+        let random1 = random[Math.floor(Math.random() * random.length)];
         let info = random1.split(" ");
+
+
         switch (info[0]) {
             case "concert-this":
-                concertInfo(info[1]);
+                concertInfo(info.splice(1).join(" "));
                 break;
             case "movie-this":
-                movieInfo(info[1]);
+                movieInfo(info.splice(1));
                 break;
             case "spotify-this-song":
-                songInfo(info[1]);
+                songInfo(info.splice(1).join(" "));
                 break;
             default:
                 console.log("Invalid input");
