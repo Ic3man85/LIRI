@@ -40,7 +40,6 @@ switch (command) {
 function concertInfo(input) {
     axios.get("https://rest.bandsintown.com/artists/" + input + "/events?app_id=codingbootcamp")
         .then(function(response) {
-            // console.log(response.data);
             for (let i = 0; i < 10; i++) {
                 console.log("-----UPCOMING CONCERTS------")
                 console.log("Name: " + input)
@@ -99,22 +98,20 @@ function movieInfo(input) {
                 console.log("---------------------------------"),
                 console.log("Actors: " + movie.Actors),
             ];
-            // fs.appendFile("movies.txt", stuff, function(err) {
-            //     if (err) {
-            //         console.log(err);
-            //     }
-            //     fs.appendFile("Title: " + movie.Title);
-            //     fs.appendFile("---------------------------------");
-            //     fs.appendFile("Year released: " + movie.Released);
-            //     fs.appendFile("IMDB rating: " + movie.imdbRating);
-            //     fs.appendFile("Rotten Tomatoes ratiing: " + movie.Ratings[1].Value);
-            //     fs.appendFile("Country: " + movie.Country);
-            //     fs.appendFile("Language: " + movie.Language);
-            //     fs.appendFile("---------------------------------");
-            //     fs.appendFile("Plot: " + movie.Plot);
-            //     fs.appendFile("---------------------------------");
-            //     fs.appendFile("Actors: " + movie.Actors);
-            // })
+
+            fs.appendFileSync("movies.txt", "\nTitle: " + movie.Title + "\n");
+            fs.appendFileSync("movies.txt", "---------------------------------\n");
+            fs.appendFileSync("movies.txt", "Year released: " + movie.Released + "\n");
+            fs.appendFileSync("movies.txt", "IMDB rating: " + movie.imdbRating + "\n");
+            fs.appendFileSync("movies.txt", "Rotten Tomatoes ratiing: " + movie.Ratings[1].Value + "\n");
+            fs.appendFileSync("movies.txt", "Country: " + movie.Country + "\n");
+            fs.appendFileSync("movies.txt", "Language: " + movie.Language + "\n");
+            fs.appendFileSync("movies.txt", "---------------------------------\n");
+            fs.appendFileSync("movies.txt", "Plot: " + movie.Plot + "\n");
+            fs.appendFileSync("movies.txt", "---------------------------------\n");
+            fs.appendFileSync("movies.txt", "Actors: " + movie.Actors) + "\n";
+            fs.appendFileSync("movies.txt", "---------------------------------\n");
+
         }).catch(function(error) {
             if (error) {
                 console.log(error);
@@ -124,7 +121,7 @@ function movieInfo(input) {
 
 }
 
-function doWhatItSays(input) {
+function doWhatItSays() {
 
     fs.readFile("random.txt", "utf8", function(error, data) {
         if (error) {
